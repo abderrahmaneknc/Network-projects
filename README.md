@@ -210,4 +210,49 @@ The request body should be in JSON format and include the following parameters:
 }
 ```
 
+# Network Configuration Documentation
+
+This configuration file defines the setup for routers and PCs in a network. It contains the ports for each router and PC that will be used for Telnet connections.
+
+## Configuration Overview
+
+### Routers
+
+The file defines three routers, each with a name and a port. These routers are used for network routing tasks and will listen on the specified ports.
+
+| Router Name | Port  |
+|-------------|-------|
+| R1          | 5012  |
+| R2          | 5013  |
+| R3          | 5014  |
+
+### PCs
+
+The file defines three PCs, each with a name and a port. These PCs are used to simulate end devices on the network and will listen on the specified ports.
+
+| PC Name | Port  |
+|---------|-------|
+| PC1     | 5018  |
+| PC2     | 5020  |
+| PC3     | 5022  |
+
+## How to Use
+
+This configuration file is structured as a JavaScript object that can be imported into your code. The `routers` and `pcs` arrays hold the details of the devices on the network.
+
+### Example Usage:
+
+```javascript
+const { routers, pcs } = require('./path_to_config');
+
+// Access router details
+routers.forEach(router => {
+  console.log(`Router Name: ${router.name}, Port: ${router.port}`);
+});
+
+// Access PC details
+pcs.forEach(pc => {
+  console.log(`PC Name: ${pc.name}, Port: ${pc.port}`);
+});
+
 
