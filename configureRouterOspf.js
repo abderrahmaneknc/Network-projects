@@ -1,25 +1,31 @@
-const connectToDevice = require('./connect');
+// const connectToDevice = require('./connect');
+// const { routers } = require('./devices');
 
-async function configureRouter(port, interfaces, ospfNetworks) {
-  const conn = await connectToDevice(port);
-  await conn.exec('enable');
-  await conn.exec('configure terminal');
+// async function configureRouterByName(name, interfaces, ospfNetworks) {
+//   const port = routers[name];
+//   if (!port) {
+//     throw new Error(`Unknown router: ${name}`);
+//   }
 
-  for (const iface of interfaces) {
-    await conn.exec(`interface ${iface.int}`);
-    await conn.exec(`ip address ${iface.ip} ${iface.mask}`);
-    await conn.exec('no shutdown');
-    await conn.exec('exit');
-  }
+//   const conn = await connectToDevice(port);
+//   await conn.exec('enable');
+//   await conn.exec('configure terminal');
 
-  await conn.exec('router ospf 1');
-  for (const net of ospfNetworks) {
-    await conn.exec(`network ${net.ip} ${net.wildcard} area ${net.area}`);
-  }
+//   for (const iface of interfaces) {
+//     await conn.exec(`interface ${iface.int}`);
+//     await conn.exec(`ip address ${iface.ip} ${iface.mask}`);
+//     await conn.exec('no shutdown');
+//     await conn.exec('exit');
+//   }
 
-  await conn.exec('end');
-  await conn.exec('write memory');
-  conn.end();
-}
+//   await conn.exec('router ospf 1');
+//   for (const net of ospfNetworks) {
+//     await conn.exec(`network ${net.ip} ${net.wildcard} area ${net.area}`);
+//   }
 
-module.exports = configureRouter;
+//   await conn.exec('end');
+//   await conn.exec('write memory');
+//   conn.end();
+// }
+
+// module.exports = configureRouterByName;

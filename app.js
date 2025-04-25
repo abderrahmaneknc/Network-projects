@@ -1,32 +1,108 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const configureRouter = require('./configureRouterOspf');
 const configurePC = require('./configurePC');
+const configureOspf = require('./configureOspf');  
+const configureInterfaces = require('./configureInterfaces');
+const { getCommandOutput } = require('./connect');
+const { pcs } = require('./devices');  
+const { routers } = require('./devices');  
+const pingPC = require('./pingPCs'); 
 
 const app = express();
 app.use(bodyParser.json());
 
-app.post('/start-config', async (req, res) => {
-  const { routers, pcs } = req.body;
+app.post('/configure-interfaces', async (req, res) => {
+  const { routers } = req.body;
 
   try {
-    // Configure all routers
     for (const router of routers) {
-      await configureRouter(router.port, router.interfaces, router.ospfNetworks);
+      const { routerName, interfaces } = router;
+      await configureInterfaces(routerName, interfaces);  
     }
 
-    // Configure all PCs
-    for (const pc of pcs) {
-      await configurePC(pc.port, pc.ip, pc.mask, pc.gateway);
-    }
-
-    res.send('All devices configured successfully.');
+    res.send('Interfaces configured successfully for all routers.');
   } catch (err) {
-    console.error('Error during configuration:', err);
+    console.error('Error configuring interfaces:', err);
     res.status(500).send('Configuration failed: ' + err.message);
   }
 });
 
+app.post('/configurePcs', async (req, res) => {
+  const { pcs } = req.body;
+
+  try {
+    for (const pc of pcs) {
+      await configurePC(pc.name, pc.ip, pc.mask, pc.gateway);
+    }
+
+    res.send('All PCs configured successfully.');
+  } catch (err) {
+    console.error('Error during PC configuration:', err);
+    res.status(500).send('PC Configuration failed: ' + err.message);
+  }
+});
+
+
+
+app.post('/configure-ospf', async (req, res) => {
+  const { routers } = req.body;  
+
+  try {
+    for (const router of routers) {
+      const { name, ospfNetworks } = router;  
+      await configureOspf(name, ospfNetworks); 
+    }
+
+    res.send('OSPF configured successfully for all routers.');
+  } catch (err) {
+    console.error('Error during OSPF configuration:', err);
+    res.status(500).send('OSPF configuration failed: ' + err.message);
+  }
+});
+
+app.post('/ping', async (req, res) => {
+  const { sourcePC, targetIP } = req.body;
+
+  try {
+    const output = await pingPC(sourcePC, targetIP);
+    res.send(output); 
+  } catch (err) {
+    console.error('Ping error:', err);
+    res.status(500).send('Ping failed: ' + err.message);
+  }
+});
+
+
+
+// Endpoint to run commands on routers
+// Endpoint to run commands on routers
+app.post('/run-command', async (req, res) => {
+  const { routerName, command } = req.body;
+
+  if (!routerName || !command) {
+    return res.status(400).send('Both routerName and command are required');
+  }
+
+  const router = routers.find(r => r.name === routerName);
+
+  if (!router) {
+    return res.status(400).send('Unknown router');
+  }
+
+  try {
+    // Get the cleaned output
+    const output = await getCommandOutput(router.port, command);
+    
+    // Send only the cleaned output
+    res.send(output); 
+  } catch (err) {
+    console.error('Error running command:', err);
+    res.status(500).send('Error retrieving command output: ' + err.message);
+  }
+});
+
+
+// Start the server
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });

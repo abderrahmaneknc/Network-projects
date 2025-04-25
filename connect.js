@@ -1,4 +1,4 @@
-const {Telnet} = require('telnet-client');
+const { Telnet } = require('telnet-client');
 
 async function connectToDevice(port) {
   const connection = new Telnet();
@@ -7,16 +7,45 @@ async function connectToDevice(port) {
     host: '127.0.0.1',
     port: port,
     shellPrompt: '#',
-    timeout: 8000,
-    execTimeout: 8000,
-    debug: true,
+    timeout: 60000,
+    execTimeout: 60000,
+    debug: false, 
     negotiationMandatory: false,
     ors: '\r\n',
     irs: '\r\n',
   };
 
-  await connection.connect(params);
-  return connection;
+  try {
+    await connection.connect(params);
+    console.log("Connected to device successfully");
+    return connection;
+  } catch (err) {
+    console.error('Connection failed:', err);
+    throw err; 
+  }
 }
 
-module.exports = connectToDevice;
+async function getCommandOutput(port, command) {
+  const conn = await connectToDevice(port);  
+
+  try {
+   
+    await conn.send("\r");
+    
+    
+    await new Promise(resolve => setTimeout(resolve, 2000));  
+
+    
+    const output = await conn.exec(command, { execTimeout: 30000 });
+
+    conn.end();  
+
+    return output; 
+  } catch (err) {
+    console.error('Error executing command:', err);  
+    conn.end();  
+    throw err;  
+  }
+}
+
+module.exports = { connectToDevice, getCommandOutput };
