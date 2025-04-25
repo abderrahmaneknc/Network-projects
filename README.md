@@ -91,9 +91,123 @@ The request body should be in JSON format and contain the following structure:
     }
   ]
 }
+```
+
+
+# API Documentation - Configure OSPF
+
+## Endpoint
+
+**URL**: `http://localhost:3000/configure-ospf`
+
+**Method**: `POST`
+
+This endpoint allows the user to configure OSPF (Open Shortest Path First) for routers by sending a POST request to the specified URL. The request should include a JSON payload containing an array of routers, each with a list of OSPF networks to configure.
+
+---
+
+## Request Body
+
+The request body should be in JSON format and contain the following structure:
+
+- `routers` (array of objects): An array of routers, where each router object contains:
+  - `name` (string): The name of the router.
+  - `ospfNetworks` (array of objects): An array of OSPF networks, where each network object contains:
+    - `ip` (string): The network IP address.
+    - `wildcard` (string): The wildcard mask for the network.
+    - `area` (string): The OSPF area for the network.
+
+### Example Request Body:
+
+```json
+{
+  "routers": [
+    {
+      "name": "R1",
+      "ospfNetworks": [
+        { "ip": "192.168.5.0", "wildcard": "0.0.0.3", "area": "0" },
+        { "ip": "10.0.0.0", "wildcard": "0.0.0.3", "area": "0" },
+        { "ip": "13.13.13.0", "wildcard": "0.0.0.255", "area": "0" }
+      ]
+    },
+    {
+      "name": "R2",
+      "ospfNetworks": [
+        { "ip": "172.16.28.0", "wildcard": "0.0.0.3", "area": "0" },
+        { "ip": "10.0.0.0", "wildcard": "0.0.0.3", "area": "0" },
+        { "ip": "11.11.11.0", "wildcard": "0.0.0.255", "area": "0" }
+      ]
+    },
+    {
+      "name": "R3",
+      "ospfNetworks": [
+        { "ip": "192.168.5.0", "wildcard": "0.0.0.3", "area": "0" },
+        { "ip": "172.16.28.0", "wildcard": "0.0.0.3", "area": "0" },
+        { "ip": "12.12.12.0", "wildcard": "0.0.0.255", "area": "0" }
+      ]
+    }
+  ]
+}
 
 
 
+```
 
+
+# API Documentation - Ping Endpoint
+
+## Endpoint
+
+**URL**: `http://localhost:3000/ping`
+
+**Method**: `POST`
+
+This endpoint allows you to send a ping request from a source PC to a target IP address.
+
+---
+
+## Request Body
+
+The request body should be in JSON format and contain the following parameters:
+
+- `sourcePC` (string): The name of the source PC from which the ping request will be sent.
+- `targetPC` (string): The name of the target PC to which the ping request is sent.
+
+### Example Request Body:
+
+```json
+{
+  "sourcePC": "PC1",
+  "targetPC": "PC2"
+}
+```
+
+# API Documentation - Run Command
+
+## Endpoint
+
+**URL**: `http://localhost:3000/run-command`
+
+**Method**: `POST`
+
+This endpoint allows the user to run a specific command on a router and retrieve the response.
+
+---
+
+## Request Body
+
+The request body should be in JSON format and include the following parameters:
+
+- `routerName` (string): The name of the router where the command will be executed.
+- `command` (string): The command to be executed on the router.
+
+### Example Request Body:
+
+```json
+{
+  "routerName": "R1",
+  "command": "show ip interface brief"
+}
+```
 
 
