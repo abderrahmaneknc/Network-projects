@@ -46,7 +46,7 @@ app.post('/configurePcs', async (req, res) => {
       await configurePC(pc.name, pc.ip, pc.mask, pc.gateway);
     }
 
-    res.send('All PCs configured successfully.');
+    res.send(`PCs configured successfully: ${pcs.map(pc => pc.name).join(', ')}.`);	
   } catch (err) {
     console.error('Error during PC configuration:', err);
     res.status(500).send('PC Configuration failed: ' + err.message);
