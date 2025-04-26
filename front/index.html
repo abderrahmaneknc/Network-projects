@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Automation</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box box0 section">
+        <p>Basic Configuration</p>
+      </div>
+
+      <div class="box box1">
+        <p class="title">Interfaces IP Configuration :</p>
+        <div class="content">
+          <form action="" id="box1form">
+            <div>
+              <label for="device">Router name</label>
+              <select id="device" name="device">
+                <option value="R0">R0</option>
+                <option value="R1">R1</option>
+                <option value="R2">R2</option>
+                <option value="R3">R3</option>
+              </select>
+            </div>
+            <div>
+              <label for="interface">Interface name</label>
+              <select id="interface" name="interface">
+                <option value="fa0/0">fa0/0</option>
+                <option value="fa0/1">fa0/1</option>
+              </select>
+            </div>
+            <div>
+              <label for="ipaddress">IP address</label>
+              <input
+                type="text"
+                id="ipaddress"
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                placeholder="Enter your ip address"
+                required
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+            <div>
+              <label for="mask">Subnet mask</label>
+              <input
+                type="text"
+                id="mask"
+                placeholder="Enter your subnet mask"
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                required
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+      <div class="box box2">
+        <p class="title">PCS IP Configuration :</p>
+        <div class="content">
+          <form action="" id="box2form">
+            <div>
+              <label for="pc">PC name</label>
+              <select id="pc" name="pc">
+                <option value="PC0">PC0</option>
+                <option value="PC1">PC1</option>
+                <option value="PC2">PC2</option>
+              </select>
+            </div>
+            <div>
+              <label for="ipaddress2">IP address</label>
+              <input
+                type="text"
+                id="ipaddress2"
+                placeholder="Enter your ip address"
+                required
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+            <div>
+              <label for="mask2">Subnet mask</label>
+              <input
+                type="text"
+                id="mask2"
+                placeholder="Enter your subnet mask"
+                required
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+            <div>
+              <label for="Gateway">Gateway ip</label>
+              <input
+                type="text"
+                id="Gateway"
+                placeholder="Enter your Gateway ip"
+                required
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+      <div class="box box3">
+        <p class="title">Pinging Between Devices :</p>
+        <div class="content">
+          <form action="" id="box3form">
+            <div>
+              <label for="pc">PC name</label>
+              <select id="pc" name="pc">
+                <option value="PC0">PC0</option>
+                <option value="PC1">PC1</option>
+                <option value="PC2">PC2</option>
+              </select>
+            </div>
+            <div>
+              <label for="ipaddress">Receiver IP address</label>
+              <input
+                type="text"
+                id="ipaddress"
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                placeholder="Enter your receiver ip"
+                required
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+      <div class="box box4">
+        <p class="title">Show Configuration :</p>
+        <div class="content3">
+            <div>
+                <p style="margin-bottom: 8px;">if you want to display the routing table, click here :</p>
+              
+                <form action="">
+                    <div>
+                        <label for="device3">Router name</label>
+                        <select id="device3" name="device3">
+                          <option value="R0">R0</option>
+                          <option value="R1">R1</option>
+                          <option value="R2">R2</option>
+                          <option value="R3">R3</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="submit">
+                </form>
+            </div>
+            <br>
+            <div>
+                <p style="margin-bottom: 8px;">if you want to display the running config file, click here:</p>
+                
+                <form action="">
+                    <div>
+                        <label for="device4">Router name</label>
+                        <select id="device4" name="device4">
+                          <option value="R0">R0</option>
+                          <option value="R1">R1</option>
+                          <option value="R2">R2</option>
+                          <option value="R3">R3</option>
+                        </select>
+                      </div>
+                    <input type="submit" value="submit">
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="box box5 section">
+        <p>More Complex Configuration</p>
+      </div>
+      <div class="box box6 section section1">
+        <p>OSPF Configuration</p>
+      </div>
+      <div class="box box7 section section2">
+        <p>Static routing Configuration</p>
+      </div>
+      <div class="box box8">
+        <p class="title">OSPF Configuration :</p>
+        <div class="content">
+          <form action="" id="box8form">
+            <div>
+              <label for="device2">Router name</label>
+              <select id="device2" name="device2">
+                <option value="R0">R0</option>
+                <option value="R1">R1</option>
+                <option value="R2">R2</option>
+                <option value="R3">R3</option>
+              </select>
+            </div>
+            <div>
+              <label for="networks">Networks</label>
+              <multi-input>
+                <input list="networks" />
+                <datalist id="networks">
+                  <option value="fa0/0"></option>
+                  <option value="fa0/1"></option>
+                  <option value="fa1/0"></option>
+                </datalist>
+              </multi-input>
+            </div>
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+      <div class="box box9">
+        <p class="title">Creating static routing :</p>
+        <div class="content">
+          <form action="" id="box9form">
+            <div>
+                <label for="device2">Router name</label>
+                <select id="device2" name="device2">
+                  <option value="R0">R0</option>
+                  <option value="R1">R1</option>
+                  <option value="R2">R2</option>
+                  <option value="R3">R3</option>
+                </select>
+              </div>
+              <div>
+                <label for="destination">Destination network</label>
+                <input
+                  type="text"
+                  id="destination"
+                  pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                  placeholder="Enter your destination network"
+                  required
+                />
+                <div id="numberInputError" class="error-message"></div>
+              </div>
+              <div>
+                <label for="submask">Subnet mask</label>
+                <input
+                  type="text"
+                  id="submask"
+                  pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                  placeholder="Enter your subnet mask"
+                  required
+                />
+                <div id="numberInputError" class="error-message"></div>
+              </div>
+              <div>
+                <label for="nexthop">Next hop ip</label>
+                <input
+                  type="text"
+                  id="nexthop"
+                  pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                  placeholder="Enter your next hope"
+                  required
+                />
+                <div id="numberInputError" class="error-message"></div>
+              </div>
+
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
