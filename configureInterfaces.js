@@ -2,10 +2,12 @@ const { connectToDevice } = require('./connect');
 const { routers } = require('./devices');
 
 async function configureInterfaces(name, interfaces) {
-  const port = routers[name];
-  if (!port) {
-    throw new Error(`Unknown router: ${name}`);
-  }
+  const router = routers.find(r => r.name === name);
+if (!router) {
+  throw new Error(`Unknown router: ${name}`);
+}
+const port = router.port;
+
 
   const conn = await connectToDevice(port);
   
