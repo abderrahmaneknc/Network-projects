@@ -54,7 +54,11 @@
               />
               <div id="numberInputError" class="error-message"></div>
             </div>
-            <input type="submit" value="Submit" />
+            <div class="buttons-flex">
+              <button class="boom boom1">add to list</button>
+              <input type="submit" value="Submit" />
+            </div>
+            
           </form>
         </div>
       </div>
@@ -103,7 +107,10 @@
               />
               <div id="numberInputError" class="error-message"></div>
             </div>
-            <input type="submit" value="Submit" />
+            <div class="buttons-flex">
+              <button class="boom boom2">add to list</button>
+              <input type="submit" value="Submit" />
+            </div>
           </form>
         </div>
       </div>
@@ -141,7 +148,7 @@
             <div>
                 <p style="margin-bottom: 8px;">if you want to display the routing table, click here :</p>
               
-                <form action="">
+                <form action=""  id="form123">
                     <div>
                         <label for="device3">Router name</label>
                         <select id="device3" name="device3">
@@ -158,7 +165,7 @@
             <div>
                 <p style="margin-bottom: 8px;">if you want to display the running config file, click here:</p>
                 
-                <form action="">
+                <form action="" id="form1234">
                     <div>
                         <label for="device4">Router name</label>
                         <select id="device4" name="device4">
@@ -196,17 +203,43 @@
               </select>
             </div>
             <div>
-              <label for="networks">Networks</label>
-              <multi-input>
-                <input list="networks" />
-                <datalist id="networks">
-                  <option value="fa0/0"></option>
-                  <option value="fa0/1"></option>
-                  <option value="fa1/0"></option>
-                </datalist>
-              </multi-input>
+              <label for="area">Area</label>
+              <input
+                type="text"
+                id="area"
+                pattern="^\d+$"
+                placeholder="Enter your area id"
+                required
+              />
+              <div id="numberInputError" class="error-message"></div>
             </div>
-            <input type="submit" value="Submit" />
+            <div>
+              <label for="neighbor">neighbor network</label>
+              <input
+                type="text"
+                id="neighbor"
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                placeholder="Enter your neighbor network"
+                required
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+            <div>
+              <label for="inversemask">inverse mask</label>
+              <input
+                type="text"
+                id="inversemask"
+                pattern="^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                placeholder="Enter your inverse mask"
+                required
+              />
+              <div id="numberInputError" class="error-message"></div>
+            </div>
+           
+            <div class="buttons-flex">
+              <button class="boom boom3">add to list</button>
+              <input type="submit" value="Submit" />
+            </div>
           </form>
         </div>
       </div>
@@ -257,7 +290,10 @@
                 <div id="numberInputError" class="error-message"></div>
               </div>
 
-            <input type="submit" value="Submit" />
+              <div class="buttons-flex">
+                <button class="boom boom4">add to list</button>
+                <input type="submit" value="Submit" />
+              </div>
           </form>
         </div>
       </div>

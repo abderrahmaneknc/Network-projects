@@ -1,24 +1,75 @@
 // Get the form element
 const form = document.getElementById("box1form");
-const form2 = document.getElementById("box12form");
+const form2 = document.getElementById("box2form");
 const form3 = document.getElementById("box3form");
 const form4 = document.getElementById("box8form");
 const form5 = document.getElementById("box9form");
 const form6 = document.getElementById("box10form");
+const form123 = document.getElementById("form123");
+const form1234 = document.getElementById("form1234");
 
-//first form
-form.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent actual form submission
+//form123
+form123.addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-  // Get the values of inputs
+  const data = {
+    routers: [
+      {
+        routersName: form123.device3.value,
+        command: "show ip route",
+      },
+    ],
+  };
 
-  const router = document.getElementById("device").value;
-  const inter = document.getElementById("interface").value;
-  const ipaddress = document.getElementById("ipaddress").value;
-  const mask = document.getElementById("mask").value;
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/run-command",
+      data, // send the data directly here
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  console.log("Name:", router);
-  console.log("Email:", inter);
+    alert("Configuration sent successfully!");
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to send configuration.");
+  }
+});
+
+//form1234
+form1234.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const data = {
+    routers: [
+      {
+        routersName: form1234.device4.value,
+        command: "show running-config",
+      },
+    ],
+  };
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/run-command",
+      data, // send the data directly here
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    alert("Configuration sent successfully!");
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to send configuration.");
+  }
 });
 
 //handeling forms
@@ -49,16 +100,33 @@ form.addEventListener("submit", function (event) {
 });
 
 //first form
-form.addEventListener("submit", async function (e) {
+let interfaces = [];
+const addbtn1 = document.querySelector(".boom1");
+addBtn1.addEventListener("click", function (e) {
   e.preventDefault();
 
+  const int = document.getElementById("interface").value;
+  const ip = document.getElementById("ipaddress").value;
+  const mask = document.getElementById("mask").value;
+
+  if (int && ip && mask) {
+    interfaces.push({ int, ip, mask });
+    alert("Interface added!");
+    form.reset(); // optional
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
+
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const routerName = document.getElementById("device").value;
+
   const data = {
-    routersName: form.device.value,
-    interfaces: [
+    routers: [
       {
-        int: form.interface.value,
-        ip: form.ipaddress.value,
-        mask: form.mask.value,
+        routername: routerName,
+        interfaces: interfaces,
       },
     ],
   };
@@ -83,18 +151,30 @@ form.addEventListener("submit", async function (e) {
 });
 
 //second form
+let pcs = [];
+const addbtn2 = document.querySelector(".boom2");
+addBtn2.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("pc").value;
+  const ip = document.getElementById("ipaddress2").value;
+  const mask = document.getElementById("mask2").value;
+  const gateway = document.getElementById("Gateway").value;
+
+  if (name && ip && mask && gateway) {
+    pcs.push({ name, ip, mask, gateway });
+    alert("Interface added!");
+    form.reset(); // optional
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
+
 form2.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const data = {
-    pcs: [
-      {
-        name: form2.pc.value,
-        ip: form2.ipaddress2.value,
-        mask: form2.mask2.value,
-        gateway: form2.Gateway.value,
-      },
-    ],
+    pcs: pcs,
   };
 
   try {
@@ -145,20 +225,31 @@ form3.addEventListener("submit", async function (e) {
 });
 
 //fifth form
-form5.addEventListener("submit", async function (e) {
+let staticRoutes = [];
+const addbtn4 = document.querySelector(".boom4");
+addBtn4.addEventListener("click", function (e) {
   e.preventDefault();
 
+  const destinationNetwork = document.getElementById("destination").value;
+  const mask = document.getElementById("submask").value;
+  const nextHop = document.getElementById("nexthop").value;
+
+  if (destinationNetwork && mask && nextHop) {
+    staticRoutes.push({ destinationNetwork, mask, nextHop });
+    alert("Interface added!");
+    form.reset(); // optional
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
+form5.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const name = document.getElementById("device2").value;
   const data = {
     routers: [
       {
-        name: form5.device2.value,
-        staticRoutes: [
-          {
-            destinationNetwork: form5.destination.value,
-            mask: form5.submask.value,
-            nextHop: form5.nexthop.value,
-          },
-        ],
+        name: name,
+        staticRoutes: staticRoutes,
       },
     ],
   };
@@ -183,10 +274,34 @@ form5.addEventListener("submit", async function (e) {
 });
 
 //fourth form
-form4.addEventListener("submit", async function (e) {
+let ospfNetworks = [];
+const addbtn3 = document.querySelector(".boom3");
+addBtn3.addEventListener("click", function (e) {
   e.preventDefault();
 
-  const data = {};
+  const area = document.getElementById("area").value;
+  const ip = document.getElementById("neighbor").value;
+  const wildcard = document.getElementById("inversemask").value;
+
+  if (area && ip && wildcard) {
+    ospfNetworks.push({ ip, wildcard, area });
+    alert("Interface added!");
+    form.reset(); // optional
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
+form4.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const name = document.getElementById("device2").value;
+  const data = {
+    routers: [
+      {
+        name: name,
+        ospfNetworks: ospfNetworks,
+      },
+    ],
+  };
 
   try {
     const response = await axios.post(
