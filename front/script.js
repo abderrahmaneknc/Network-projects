@@ -102,7 +102,7 @@ form.addEventListener("submit", function (event) {
 //first form
 let interfaces = [];
 const addbtn1 = document.querySelector(".boom1");
-addBtn1.addEventListener("click", function (e) {
+addbtn1.addEventListener("click", function (e) {
   e.preventDefault();
 
   const int = document.getElementById("interface").value;
@@ -112,7 +112,6 @@ addBtn1.addEventListener("click", function (e) {
   if (int && ip && mask) {
     interfaces.push({ int, ip, mask });
     alert("Interface added!");
-    form.reset(); // optional
   } else {
     alert("Please fill all interface fields");
   }
@@ -125,7 +124,7 @@ form.addEventListener("submit", async function (e) {
   const data = {
     routers: [
       {
-        routername: routerName,
+        routerName: routerName,
         interfaces: interfaces,
       },
     ],
@@ -153,7 +152,7 @@ form.addEventListener("submit", async function (e) {
 //second form
 let pcs = [];
 const addbtn2 = document.querySelector(".boom2");
-addBtn2.addEventListener("click", function (e) {
+addbtn2.addEventListener("click", function (e) {
   e.preventDefault();
 
   const name = document.getElementById("pc").value;
@@ -227,7 +226,7 @@ form3.addEventListener("submit", async function (e) {
 //fifth form
 let staticRoutes = [];
 const addbtn4 = document.querySelector(".boom4");
-addBtn4.addEventListener("click", function (e) {
+addbtn4.addEventListener("click", function (e) {
   e.preventDefault();
 
   const destinationNetwork = document.getElementById("destination").value;
@@ -276,7 +275,7 @@ form5.addEventListener("submit", async function (e) {
 //fourth form
 let ospfNetworks = [];
 const addbtn3 = document.querySelector(".boom3");
-addBtn3.addEventListener("click", function (e) {
+addbtn3.addEventListener("click", function (e) {
   e.preventDefault();
 
   const area = document.getElementById("area").value;
