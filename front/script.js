@@ -53,20 +53,26 @@ form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const data = {
-    routersName: form.device.value,
-    interfaces: [
+    routers: [
       {
-        int: form.interface.value,
-        ip: form.ipaddress.value,
-        mask: form.mask.value,
+        routerName: form.device.value,
+        interfaces: [
+          {
+            int: form.interface.value,
+            ip: form.ipaddress.value,
+            mask: form.mask.value,
+          },
+        ],
       },
     ],
   };
 
+  console.log("Sending data:", data);  // Log the data you're sending
+
   try {
     const response = await axios.post(
       "http://localhost:3000/configure-interfaces",
-      data, // send the data directly here
+      data,
       {
         headers: {
           "Content-Type": "application/json",
@@ -81,6 +87,8 @@ form.addEventListener("submit", async function (e) {
     alert("Failed to send configuration.");
   }
 });
+
+
 
 //second form
 form2.addEventListener("submit", async function (e) {
