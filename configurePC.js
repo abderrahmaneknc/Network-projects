@@ -10,6 +10,7 @@ async function configurePC(name, ip, mask, gateway) {
 
   const conn = await connectToDevice(pc.port);  
   await conn.exec(`ip ${ip} ${mask} ${gateway}`);
+  await conn.exec(`save`);
   conn.end();  
 }
 
