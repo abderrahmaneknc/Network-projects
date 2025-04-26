@@ -49,28 +49,32 @@ form.addEventListener("submit", function (event) {
 });
 
 //first form
+let interfaces = [];
+const addbtn1 = document.querySelector(".boom1");
+addbtn1.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const int = document.getElementById("interface").value;
+  const ip = document.getElementById("ipaddress").value;
+  const mask = document.getElementById("mask").value;
+
+  if (int && ip && mask) {
+    interfaces.push({ int, ip, mask });
+    alert("Interface added!");
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
+
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
+  const routerName = document.getElementById("device").value;
 
   const data = {
     routers: [
       {
-        routersName: form.device.value,
-        interfaces: [
-          {
-            int: form.interface.value,
-            ip: form.ipaddress.value,
-            mask: form.mask.value,
-          },
-        ],
-      },
-    ],
-    routersName: form.device.value,
-    interfaces: [
-      {
-        int: form.interface.value,
-        ip: form.ipaddress.value,
-        mask: form.mask.value,
+        routerName: routerName,
+        interfaces: interfaces,
       },
     ],
   };
@@ -95,6 +99,25 @@ form.addEventListener("submit", async function (e) {
 });
 
 //second form
+let pcs = [];
+const addbtn2 = document.querySelector(".boom2");
+addbtn2.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("pc").value;
+  const ip = document.getElementById("ipaddress2").value;
+  const mask = document.getElementById("mask2").value;
+  const gateway = document.getElementById("Gateway").value;
+
+  if (name && ip && mask && gateway) {
+    pcs.push({ name, ip, mask, gateway });
+    alert("Interface added!");
+    form.reset(); // optional
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
+
 form2.addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -157,6 +180,23 @@ form3.addEventListener("submit", async function (e) {
 });
 
 //fifth form
+let staticRoutes = [];
+const addbtn4 = document.querySelector(".boom4");
+addbtn4.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const destinationNetwork = document.getElementById("destination").value;
+  const mask = document.getElementById("submask").value;
+  const nextHop = document.getElementById("nexthop").value;
+
+  if (destinationNetwork && mask && nextHop) {
+    staticRoutes.push({ destinationNetwork, mask, nextHop });
+    alert("Interface added!");
+    form.reset(); // optional
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
 form5.addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -195,6 +235,23 @@ form5.addEventListener("submit", async function (e) {
 });
 
 //fourth form
+let ospfNetworks = [];
+const addbtn3 = document.querySelector(".boom3");
+addbtn3.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const area = document.getElementById("area").value;
+  const ip = document.getElementById("neighbor").value;
+  const wildcard = document.getElementById("inversemask").value;
+
+  if (area && ip && wildcard) {
+    ospfNetworks.push({ ip, wildcard, area });
+    alert("Interface added!");
+    form.reset(); // optional
+  } else {
+    alert("Please fill all interface fields");
+  }
+});
 form4.addEventListener("submit", async function (e) {
   e.preventDefault();
 
