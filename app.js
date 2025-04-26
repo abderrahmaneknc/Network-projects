@@ -7,6 +7,7 @@ const { getCommandOutput } = require('./connect');
 const { pcs } = require('./devices');  
 const { routers } = require('./devices');  
 const pingPC = require('./pingPCs'); 
+const configureStaticRouting = require('./staticRouting'); // Import the static routing configuration function
 
 const app = express();
 app.use(bodyParser.json());
@@ -20,7 +21,7 @@ app.post('/configure-interfaces', async (req, res) => {
       await configureInterfaces(routerName, interfaces);  
     }
 
-    res.send('Interfaces configured successfully for all routers.');
+    res.send(`Interfaces configured successfully for   ${routers.map(r => r.routerName).join(', ')}.`);
   } catch (err) {
     console.error('Error configuring interfaces:', err);
     res.status(500).send('Configuration failed: ' + err.message);
@@ -42,7 +43,25 @@ app.post('/configurePcs', async (req, res) => {
   }
 });
 
+app.post('/configure-static', async (req, res) => {
+  const { routers } = req.body; // routers est un tableau [{ name, staticRoutes: [{ destinationNetwork, mask, nextHop }] }]
 
+  try {
+    for (const router of routers) {
+      const { name, staticRoutes } = router;
+
+      for (const route of staticRoutes) {
+        const { destinationNetwork, mask, nextHop } = route;
+        await configureStaticRouting(name, destinationNetwork, mask, nextHop);
+      }
+    }
+
+    res.send(`Static routes configured successfully for  ${routers.map(r => r.name).join(', ')}.`);
+  } catch (err) {
+    console.error('Error during static route configuration:', err);
+    res.status(500).send('Static route configuration failed: ' + err.message);
+  }
+});
 
 app.post('/configure-ospf', async (req, res) => {
   const { routers } = req.body;  
@@ -59,6 +78,7 @@ app.post('/configure-ospf', async (req, res) => {
     res.status(500).send('OSPF configuration failed: ' + err.message);
   }
 });
+
 
 app.post('/ping', async (req, res) => {
   const { sourcePC, targetIP } = req.body;
