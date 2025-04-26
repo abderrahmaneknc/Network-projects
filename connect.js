@@ -4,7 +4,7 @@ async function connectToDevice(port) {
   const connection = new Telnet();
 
   const params = {
-    host: '127.0.0.1',
+    host: 'https://network-projects.onrender.com', //127.0.0.1
     port: port,
     shellPrompt: '#',
     timeout: 60000,
