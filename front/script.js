@@ -11,14 +11,13 @@ const form1234 = document.getElementById("form1234");
 //form123
 form123.addEventListener("submit", async function (e) {
   e.preventDefault();
-
+  
+  //  const routerName = document.getElementById("device3").value;
   const data = {
-    routers: [
-      {
-        routersName: form123.device3.value,
+    
+        routerName: form123.device3.value,
         command: "show ip route",
-      },
-    ],
+     
   };
 
   try {
@@ -45,12 +44,12 @@ form1234.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const data = {
-    routers: [
-      {
-        routersName: form1234.device4.value,
+    
+     
+        routerName: form1234.device4.value,
         command: "show running-config",
-      },
-    ],
+   
+    
   };
 
   try {
@@ -120,14 +119,15 @@ addbtn1.addEventListener("click", function (e) {
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
   const routerName = document.getElementById("device").value;
+  console.log(routerName);
 
   const data = {
-    routers: [
-      {
+    
+      
         routerName: routerName,
         interfaces: interfaces,
-      },
-    ],
+      
+   
   };
 
   try {
@@ -244,11 +244,12 @@ addbtn4.addEventListener("click", function (e) {
 });
 form5.addEventListener("submit", async function (e) {
   e.preventDefault();
-  const name = document.getElementById("device2").value;
+  const name = document.getElementById("device666").value;
+  console.log(name);
   const data = {
     routers: [
       {
-        name: name,
+         name: name,
         staticRoutes: staticRoutes,
       },
     ],
