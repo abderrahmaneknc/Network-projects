@@ -1,24 +1,75 @@
 // Get the form element
 const form = document.getElementById("box1form");
-const form2 = document.getElementById("box12form");
+const form2 = document.getElementById("box2form");
 const form3 = document.getElementById("box3form");
 const form4 = document.getElementById("box8form");
 const form5 = document.getElementById("box9form");
 const form6 = document.getElementById("box10form");
+const form123 = document.getElementById("form123");
+const form1234 = document.getElementById("form1234");
 
-//first form
-form.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent actual form submission
+//form123
+form123.addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-  // Get the values of inputs
+  const data = {
+    routers: [
+      {
+        routersName: form123.device3.value,
+        command: "show ip route",
+      },
+    ],
+  };
 
-  const router = document.getElementById("device").value;
-  const inter = document.getElementById("interface").value;
-  const ipaddress = document.getElementById("ipaddress").value;
-  const mask = document.getElementById("mask").value;
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/run-command",
+      data, // send the data directly here
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  console.log("Name:", router);
-  console.log("Email:", inter);
+    alert("Configuration sent successfully!");
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to send configuration.");
+  }
+});
+
+//form1234
+form1234.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const data = {
+    routers: [
+      {
+        routersName: form1234.device4.value,
+        command: "show running-config",
+      },
+    ],
+  };
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/run-command",
+      data, // send the data directly here
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    alert("Configuration sent successfully!");
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to send configuration.");
+  }
 });
 
 //handeling forms
@@ -108,6 +159,7 @@ addbtn2.addEventListener("click", function (e) {
   const ip = document.getElementById("ipaddress2").value;
   const mask = document.getElementById("mask2").value;
   const gateway = document.getElementById("Gateway").value;
+  
 
   if (name && ip && mask && gateway) {
     pcs.push({ name, ip, mask, gateway });
@@ -122,14 +174,7 @@ form2.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const data = {
-    pcs: [
-      {
-        name: form2.pc.value,
-        ip: form2.ipaddress2.value,
-        mask: form2.mask2.value,
-        gateway: form2.Gateway.value,
-      },
-    ],
+    pcs: pcs,
   };
 
   try {
@@ -199,18 +244,12 @@ addbtn4.addEventListener("click", function (e) {
 });
 form5.addEventListener("submit", async function (e) {
   e.preventDefault();
-
+  const name = document.getElementById("device2").value;
   const data = {
     routers: [
       {
-        name: form5.device2.value,
-        staticRoutes: [
-          {
-            destinationNetwork: form5.destination.value,
-            mask: form5.submask.value,
-            nextHop: form5.nexthop.value,
-          },
-        ],
+        name: name,
+        staticRoutes: staticRoutes,
       },
     ],
   };
@@ -254,8 +293,15 @@ addbtn3.addEventListener("click", function (e) {
 });
 form4.addEventListener("submit", async function (e) {
   e.preventDefault();
-
-  const data = {};
+  const name = document.getElementById("device2").value;
+  const data = {
+    routers: [
+      {
+        name: name,
+        ospfNetworks: ospfNetworks,
+      },
+    ],
+  };
 
   try {
     const response = await axios.post(
@@ -275,3 +321,4 @@ form4.addEventListener("submit", async function (e) {
     alert("Failed to send configuration.");
   }
 });
+
