@@ -92,30 +92,30 @@ The request body should be in JSON format and contain the following structure:
   ]
 }
 ```
-# Configure OSPF API Documentation
+
+---
+
+## 1. Configure Static Routes
 
 **URL:**  
 `POST http://localhost:3000/configure-ospf`
 
 **Description:**  
-This endpoint allows the user to configure **OSPF (Open Shortest Path First)** for routers.
+This endpoint allows the user to configure **static routes** for routers.
 
----
-
-## Request
+### Request
 
 - **Method:** POST
 - **Content-Type:** application/json
 
 ### Request Body
 
-The payload must be in JSON format and should include an array of routers.  
-Each router must have:
-- A `name`
-- An array of `ospfNetworks`, where each network has:
-  - `ip`
-  - `wildcard`
-  - `area`
+The payload should be in JSON format and must include an array of routers, where each router contains:
+- `name` (string): Router name
+- `staticRoutes` (array): List of static routes, each containing:
+  - `destinationNetwork` (string): The destination network address
+  - `mask` (string): The subnet mask
+  - `nextHop` (string): The next hop IP address
 
 #### Example Request Body
 
@@ -124,32 +124,19 @@ Each router must have:
   "routers": [
     {
       "name": "R1",
-      "ospfNetworks": [
-        { "ip": "192.168.5.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "10.0.0.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "13.13.13.0", "wildcard": "0.0.0.255", "area": "0" }
-      ]
-    },
-    {
-      "name": "R2",
-      "ospfNetworks": [
-        { "ip": "172.16.28.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "10.0.0.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "11.11.11.0", "wildcard": "0.0.0.255", "area": "0" }
-      ]
-    },
-    {
-      "name": "R3",
-      "ospfNetworks": [
-        { "ip": "192.168.5.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "172.16.28.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "12.12.12.0", "wildcard": "0.0.0.255", "area": "0" }
+      "staticRoutes": [
+        {
+          "destinationNetwork": "11.11.11.0",
+          "mask": "255.255.255.0",
+          "nextHop": "10.0.0.2"
+        }
       ]
     }
   ]
 }
-```
 
+```
+---
 # API Documentation - Configure OSPF
 
 ## Endpoint
