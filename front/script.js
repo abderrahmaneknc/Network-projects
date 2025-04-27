@@ -12,13 +12,10 @@ const form1234 = document.getElementById("form1234");
 form123.addEventListener("submit", async function (e) {
   e.preventDefault();
 
+  //  const routerName = document.getElementById("device3").value;
   const data = {
-    routers: [
-      {
-        routersName: form123.device3.value,
-        command: "show ip route",
-      },
-    ],
+    routerName: form123.device3.value,
+    command: "show ip route",
   };
 
   try {
@@ -45,12 +42,8 @@ form1234.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const data = {
-    routers: [
-      {
-        routersName: form1234.device4.value,
-        command: "show running-config",
-      },
-    ],
+    routerName: form1234.device4.value,
+    command: "show running-config",
   };
 
   try {
@@ -72,33 +65,6 @@ form1234.addEventListener("submit", async function (e) {
   }
 });
 
-//handeling forms
-form.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent form submission
-
-  const numberInput = document.getElementById("ipaddress");
-  const numberInputError = document.getElementById("numberInputError");
-
-  // Clear previous errors
-  numberInputError.textContent = "";
-
-  // Validate Number Input
-  if (
-    !numberInput.value.match(
-      /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
-    )
-  ) {
-    numberInputError.textContent = "Please enter only ips.";
-  }
-
-  // If no errors, submit the form
-  if (!numberInputError.textContent) {
-    alert("Form submitted successfully!");
-    // Uncomment this line if you want to actually submit the form
-    // form.submit();
-  }
-});
-
 //first form
 let interfaces = [];
 const addbtn1 = document.querySelector(".boom1");
@@ -111,7 +77,7 @@ addbtn1.addEventListener("click", function (e) {
 
   if (int && ip && mask) {
     interfaces.push({ int, ip, mask });
-    alert("Interface added!");
+    alert("Interface added to the list");
   } else {
     alert("Please fill all interface fields");
   }
@@ -120,14 +86,11 @@ addbtn1.addEventListener("click", function (e) {
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
   const routerName = document.getElementById("device").value;
+  console.log(routerName);
 
   const data = {
-    routers: [
-      {
-        routerName: routerName,
-        interfaces: interfaces,
-      },
-    ],
+    routerName: routerName,
+    interfaces: interfaces,
   };
 
   try {
@@ -141,7 +104,7 @@ form.addEventListener("submit", async function (e) {
       }
     );
 
-    alert("Configuration sent successfully!");
+    alert("ip Configuration of the selected router sent successfully!");
     console.log(response.data);
   } catch (error) {
     console.error("Error:", error);
@@ -162,7 +125,7 @@ addbtn2.addEventListener("click", function (e) {
 
   if (name && ip && mask && gateway) {
     pcs.push({ name, ip, mask, gateway });
-    alert("Interface added!");
+    alert("pcs ip configuration added to the list");
     form.reset(); // optional
   } else {
     alert("Please fill all interface fields");
@@ -187,7 +150,7 @@ form2.addEventListener("submit", async function (e) {
       }
     );
 
-    alert("Configuration sent successfully!");
+    alert("all pcs ip Configuration sent successfully!");
     console.log(response.data);
   } catch (error) {
     console.error("Error:", error);
@@ -215,7 +178,7 @@ form3.addEventListener("submit", async function (e) {
       }
     );
 
-    alert("Configuration sent successfully!");
+    alert("pinging command sent successfully!");
     console.log(response.data);
   } catch (error) {
     console.error("Error:", error);
@@ -235,7 +198,7 @@ addbtn4.addEventListener("click", function (e) {
 
   if (destinationNetwork && mask && nextHop) {
     staticRoutes.push({ destinationNetwork, mask, nextHop });
-    alert("Interface added!");
+    alert("route added to the list!");
     form.reset(); // optional
   } else {
     alert("Please fill all interface fields");
@@ -243,7 +206,8 @@ addbtn4.addEventListener("click", function (e) {
 });
 form5.addEventListener("submit", async function (e) {
   e.preventDefault();
-  const name = document.getElementById("device2").value;
+  const name = document.getElementById("device666").value;
+  console.log(name);
   const data = {
     routers: [
       {
@@ -264,7 +228,9 @@ form5.addEventListener("submit", async function (e) {
       }
     );
 
-    alert("Configuration sent successfully!");
+    alert(
+      "static routing Configuration for all selected routes sent successfully!"
+    );
     console.log(response.data);
   } catch (error) {
     console.error("Error:", error);
@@ -284,7 +250,7 @@ addbtn3.addEventListener("click", function (e) {
 
   if (area && ip && wildcard) {
     ospfNetworks.push({ ip, wildcard, area });
-    alert("Interface added!");
+    alert("neighbor network added!");
     form.reset(); // optional
   } else {
     alert("Please fill all interface fields");
@@ -313,10 +279,116 @@ form4.addEventListener("submit", async function (e) {
       }
     );
 
-    alert("Configuration sent successfully!");
+    alert("ospf Configuration for selected router sent successfully!");
     console.log(response.data);
   } catch (error) {
     console.error("Error:", error);
     alert("Failed to send configuration.");
   }
 });
+
+// ---------------------------------------------------------------
+
+//handeling forms
+// form.addEventListener("submit", function (event) {
+//   event.preventDefault(); // Prevent form submission
+
+//   const ipaddress = document.getElementById("ipaddress");
+//   const mask = document.getElementById("mask");
+//   const ipaddress2 = document.getElementById("ipaddress2");
+//   const mask2 = document.getElementById("mask2");
+//   const Gateway = document.getElementById("Gateway");
+//   const area = document.getElementById("area");
+//   const inversemask = document.getElementById("inversemask");
+//   const destination = document.getElementById("destination");
+//   const submask = document.getElementById("submask");
+//   const nexthop = document.getElementById("nexthop");
+//   const numberInputError = document.getElementById("numberInputError");
+
+//   // Clear previous errors
+//   numberInputError.textContent = "";
+
+//   // Validate Number Input
+//   if (
+//     !ipaddress.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx.";
+//   }
+//   if (
+//     !mask.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+//   if (
+//     !ipaddress2.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+
+//   if (
+//     !mask2.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+//   if (
+//     !Gateway.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+//   if (!area.value.match(/\d+$/)) {
+//     numberInputError.textContent = "Please enter only numbers";
+//   }
+//   if (
+//     !inversemask.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+//   if (
+//     !destination.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+//   if (
+//     !submask.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+//   if (
+//     !nexthop.value.match(
+//       /^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
+//     )
+//   ) {
+//     numberInputError.textContent =
+//       "Please enter ip with this format xxx.xxx.xxx.xxx";
+//   }
+//   // If no errors, submit the form
+//   if (!numberInputError.textContent) {
+//     alert("Form submitted successfully!");
+//     // Uncomment this line if you want to actually submit the form
+//     // form.submit();
+//   }
+// });
