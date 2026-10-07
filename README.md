@@ -1,301 +1,94 @@
-# API Documentation - Configure Interfaces
+# Network Lab Automation API
 
-## Endpoint
+REST API that automates Cisco-style router and PC configuration in Packet Tracer (or similar lab topologies) over **Telnet**. Instead of typing CLI commands device by device, you send JSON payloads and the server applies interface, routing, and connectivity settings in batch.
 
-**URL**: `http://localhost:3000/configure-interfaces`
+## Highlights
 
-**Method**: `POST`
+- Configure router interfaces and end-host IP settings from a single HTTP request
+- Apply **static routes** and **OSPF** across multiple routers
+- Run arbitrary show/exec commands and **ping** between simulated PCs
+- Simple web UI in `front/` for triggering common lab workflows
+- Device names and Telnet ports centralized in `devices.js`
 
-This endpoint allows you to configure interfaces for routers using an HTTP POST request. The request should include a payload containing an array of routers, where each router contains its name and a list of interfaces with their respective IP addresses and subnet masks.
+## Tech stack
 
----
+- **Node.js**, **Express 5**
+- **telnet-client** / **ssh2** for device access
+- **CORS** + JSON body parsing
 
-## Request Body
+## Prerequisites
 
-The request body should be in JSON format and contain the following structure:
+- Node.js 18+
+- Lab environment with routers/PCs listening on the Telnet ports defined in `devices.js` (default example: R1–R3, PC1–PC3)
 
-- `routers` (array of objects): An array of routers, where each router object contains:
-  - `routerName` (string): The name of the router.
-  - `interfaces` (array of objects): An array of interfaces for the router, where each interface object contains:
-    - `int` (string): The interface name.
-    - `ip` (string): The IP address for the interface.
-    - `mask` (string): The subnet mask for the interface.
+## Getting started
 
-### Example Request Body:
+```bash
+git clone https://github.com/abderrahmaneknc/Network-projects.git
+cd Network-projects
+npm install
+node app.js
+```
+
+Server listens on **http://localhost:3000**.
+
+## Project layout
+
+| Path | Role |
+|------|------|
+| `app.js` | HTTP server and route definitions |
+| `configureInterfaces.js` | Router interface configuration |
+| `configurePC.js` | PC IP / gateway configuration |
+| `staticRouting.js` | Static route installation |
+| `configureOspf.js` | OSPF network statements |
+| `pingPCs.js` | End-to-end reachability tests |
+| `connect.js` | Telnet session helpers |
+| `devices.js` | Router/PC names and ports |
+| `front/` | Lightweight frontend |
+
+## API overview
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/configure-interfaces` | Set IPs and masks on router interfaces |
+| `POST` | `/configurePcs` | Configure PC IP, mask, and default gateway |
+| `POST` | `/configure-static` | Install static routes per router |
+| `POST` | `/configure-ospf` | Advertise OSPF networks |
+| `POST` | `/ping` | Ping from one PC to another by name |
+| `POST` | `/run-command` | Execute a CLI command on a named router |
+
+### Example: configure interfaces
 
 ```json
+POST /configure-interfaces
 {
   "routers": [
     {
       "routerName": "R1",
       "interfaces": [
-        { "int": "fa0/0", "ip": "13.13.13.1", "mask": "255.255.255.0" },
-        { "int": "se0/1", "ip": "10.0.0.1", "mask": "255.255.255.252" },
-        { "int": "se0/0", "ip": "192.168.5.2", "mask": "255.255.255.252" }
+        { "int": "fa0/0", "ip": "13.13.13.1", "mask": "255.255.255.0" }
       ]
-    },
-    {
-      "routerName": "R2",
-      "interfaces": [
-        { "int": "fa0/0", "ip": "11.11.11.1", "mask": "255.255.255.0" },
-        { "int": "se0/0", "ip": "172.16.28.1", "mask": "255.255.255.252" },
-        { "int": "se0/1", "ip": "10.0.0.2", "mask": "255.255.255.252" }
-      ]
-    },
-    {
-      "routerName": "R3",
-      "interfaces": [
-        { "int": "fa0/0", "ip": "12.12.12.1", "mask": "255.255.255.0" },
-        { "int": "se0/0", "ip": "192.168.5.1", "mask": "255.255.255.252" },
-        { "int": "se0/1", "ip": "172.16.28.2", "mask": "255.255.255.252" }
-      ]
-    }
-  ]
-}
-
-```
-
-
-# API Documentation - Configure PCs
-
-## Endpoint
-
-**URL**: `http://localhost:3000/configurePcs`
-
-**Method**: `POST`
-
-This endpoint allows you to configure PCs by sending a POST request to `http://localhost:3000/configurePcs`. The request should include a JSON payload with an array of PCs, where each PC object contains its name, IP address, subnet mask, and gateway IP address.
-
----
-
-## Request Body
-
-The request body should be in JSON format and contain the following structure:
-
-- `pcs` (array of objects): An array of PCs, where each PC object contains:
-  - `name` (string): The name of the PC.
-  - `ip` (string): The IP address of the PC.
-  - `mask` (string): The subnet mask for the PC.
-  - `gateway` (string): The gateway IP address for the PC.
-
-### Example Request Body:
-
-```json
-{
-  "pcs": [
-    {
-      "name": "PC1",
-      "ip": "12.12.12.10",
-      "mask": "255.255.255.0",
-      "gateway": "12.12.12.1"
     }
   ]
 }
 ```
 
----
-
-## 1. Configure Static Routes
-
-**URL:**  
-`POST http://localhost:3000/configure-ospf`
-
-**Description:**  
-This endpoint allows the user to configure **static routes** for routers.
-
-### Request
-
-- **Method:** POST
-- **Content-Type:** application/json
-
-### Request Body
-
-The payload should be in JSON format and must include an array of routers, where each router contains:
-- `name` (string): Router name
-- `staticRoutes` (array): List of static routes, each containing:
-  - `destinationNetwork` (string): The destination network address
-  - `mask` (string): The subnet mask
-  - `nextHop` (string): The next hop IP address
-
-#### Example Request Body
+### Example: ping
 
 ```json
-{
-  "routers": [
-    {
-      "name": "R1",
-      "staticRoutes": [
-        {
-          "destinationNetwork": "11.11.11.0",
-          "mask": "255.255.255.0",
-          "nextHop": "10.0.0.2"
-        }
-      ]
-    }
-  ]
-}
-
-```
----
-# API Documentation - Configure OSPF
-
-## Endpoint
-
-**URL**: `http://localhost:3000/configure-ospf`
-
-**Method**: `POST`
-
-This endpoint allows the user to configure OSPF (Open Shortest Path First) for routers by sending a POST request to the specified URL. The request should include a JSON payload containing an array of routers, each with a list of OSPF networks to configure.
-
----
-
-## Request Body
-
-The request body should be in JSON format and contain the following structure:
-
-- `routers` (array of objects): An array of routers, where each router object contains:
-  - `name` (string): The name of the router.
-  - `ospfNetworks` (array of objects): An array of OSPF networks, where each network object contains:
-    - `ip` (string): The network IP address.
-    - `wildcard` (string): The wildcard mask for the network.
-    - `area` (string): The OSPF area for the network.
-
-### Example Request Body:
-
-```json
-{
-  "routers": [
-    {
-      "name": "R1",
-      "ospfNetworks": [
-        { "ip": "192.168.5.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "10.0.0.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "13.13.13.0", "wildcard": "0.0.0.255", "area": "0" }
-      ]
-    },
-    {
-      "name": "R2",
-      "ospfNetworks": [
-        { "ip": "172.16.28.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "10.0.0.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "11.11.11.0", "wildcard": "0.0.0.255", "area": "0" }
-      ]
-    },
-    {
-      "name": "R3",
-      "ospfNetworks": [
-        { "ip": "192.168.5.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "172.16.28.0", "wildcard": "0.0.0.3", "area": "0" },
-        { "ip": "12.12.12.0", "wildcard": "0.0.0.255", "area": "0" }
-      ]
-    }
-  ]
-}
-
-
-
-```
-
-
-# API Documentation - Ping Endpoint
-
-## Endpoint
-
-**URL**: `http://localhost:3000/ping`
-
-**Method**: `POST`
-
-This endpoint allows you to send a ping request from a source PC to a target IP address.
-
----
-
-## Request Body
-
-The request body should be in JSON format and contain the following parameters:
-
-- `sourcePC` (string): The name of the source PC from which the ping request will be sent.
-- `targetPC` (string): The name of the target PC to which the ping request is sent.
-
-### Example Request Body:
-
-```json
+POST /ping
 {
   "sourcePC": "PC1",
   "targetPC": "PC2"
 }
 ```
 
-# API Documentation - Run Command
+Update `devices.js` so router and PC names/ports match your topology before running commands.
 
-## Endpoint
+## Author
 
-**URL**: `http://localhost:3000/run-command`
+**Kennouche Abderrahmane**
 
-**Method**: `POST`
+## License
 
-This endpoint allows the user to run a specific command on a router and retrieve the response.
-
----
-
-## Request Body
-
-The request body should be in JSON format and include the following parameters:
-
-- `routerName` (string): The name of the router where the command will be executed.
-- `command` (string): The command to be executed on the router.
-
-### Example Request Body:
-
-```json
-{
-  "routerName": "R1",
-  "command": "show ip interface brief"
-}
-```
-
-# Network Configuration Documentation devices.js file 
-
-This configuration file defines the setup for routers and PCs in a network. It contains the ports for each router and PC that will be used for Telnet connections.
-
-## Configuration Overview
-
-### Routers
-
-The file defines three routers, each with a name and a port. These routers are used for network routing tasks and will listen on the specified ports.
-
-| Router Name | Port  |
-|-------------|-------|
-| R1          | 5012  |
-| R2          | 5013  |
-| R3          | 5014  |
-
-### PCs
-
-The file defines three PCs, each with a name and a port. These PCs are used to simulate end devices on the network and will listen on the specified ports.
-
-| PC Name | Port  |
-|---------|-------|
-| PC1     | 5018  |
-| PC2     | 5020  |
-| PC3     | 5022  |
-
-## How to Use
-
-This configuration file is structured as a JavaScript object that can be imported into your code. The `routers` and `pcs` arrays hold the details of the devices on the network.
-
-### Example Usage:
-
-```javascript
-const { routers, pcs } = require('./path_to_config');
-
-// Access router details
-routers.forEach(router => {
-  console.log(`Router Name: ${router.name}, Port: ${router.port}`);
-});
-
-// Access PC details
-pcs.forEach(pc => {
-  console.log(`PC Name: ${pc.name}, Port: ${pc.port}`);
-});
-
-
+ISC
